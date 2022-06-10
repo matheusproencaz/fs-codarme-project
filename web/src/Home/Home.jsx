@@ -89,7 +89,7 @@ function Tweet({name, username, avatar, children}){
   )
 }
 
-export function Home({ loggedInUser }){
+export default function Home({ loggedInUser }){
   const [data, setData] = useState([]);
 
   async function getData(){
@@ -98,7 +98,6 @@ export function Home({ loggedInUser }){
         'authorization': `Bearer ${loggedInUser.accessToken}`
       }
     })
-
     setData(res.data);
   }
 
