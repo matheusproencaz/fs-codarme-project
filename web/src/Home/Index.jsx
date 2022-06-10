@@ -69,14 +69,13 @@ function Tweet({name, username, avatar, children}){
   )
 }
 
-export function Home(){
+export function Home({ loggedInUser }){
   const [data, setData] = useState([]);
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQxZW5xNGIwMDAwMGt1cXJ3YzRtZDczIiwiaWF0IjoxNjU0ODg4MTMzLCJleHAiOjE2NTQ5NzQ1MzN9._E4SJjH6bdSNfhuS9xZzixdnfoEjAtAB-UPKZ0uvBYQ';
 
   async function getData(){
     const res = await axios.get('http://localhost:9901/tweets', {
       headers: {
-        'authorization': `Bearer ${token}`
+        'authorization': `Bearer ${loggedInUser.accessToken}`
       }
     })
 
