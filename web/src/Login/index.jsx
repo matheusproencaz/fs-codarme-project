@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import 'axios';
 import axios from 'axios';
+import { useState } from 'react';
 
 
 const Input = props => (
@@ -15,16 +16,26 @@ const validationSchema = yup.object({
 
 export function Login({ signInUser }) {
   
+  const [errors, setErros] = useState();
+
   const formik = useFormik({
     onSubmit: async values =>{
-      const res = await axios.get(`${import.meta.env.VITE_API_HOST}/login`, {
-        auth: {
-          username: values.email,
-          password: values.password,
-        }
-      })
       
-      signInUser(res.data);
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_HOST}/login`, {
+          auth: {
+            username: values.email,
+            password: values.password,
+          }
+        })
+        
+        signInUser(res.data); 
+
+      } catch (error) {
+        if(error.response.status === 404) {
+          setErros('Usuário ou senha inválidos!');
+        }
+      }
     },
     initialValues: {
       email: '',
@@ -73,16 +84,18 @@ export function Login({ signInUser }) {
                 <div className='text-red-500 text-sm'>{formik.errors.password}</div>
               )}
             </div>
-
-            <button
-              type="submit"
-              className="w-full bg-birdBlue py-4 rounded-full disabled:opacity-50 text-lg"
-              disabled={formik.isSubmitting || !formik.isValid}
-            >
-              {formik.isSubmitting ?  'Enviando...' : 'Entrar'}
-            </button>
+            <div className='space-y-1'>
+              <button
+                type="submit"
+                className="w-full bg-birdBlue py-4 rounded-full disabled:opacity-50 text-lg"
+                disabled={formik.isSubmitting || !formik.isValid}
+              >
+                {formik.isSubmitting ?  'Enviando...' : 'Entrar'}
+              </button>
+              {errors && <div className='text-red-500 text-base text-center'>{errors}</div>}
+            </div>
           </form>
-          <span className="text-sm text-silver text-center">
+          <span className="text-sm text-silver self-center">
             Não tem conta? <a className="text-birdBlue" href='/signup'>Inscreva-se</a>
           </span>
         </div>

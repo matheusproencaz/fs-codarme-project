@@ -29,10 +29,6 @@ function TweetForm({ loggedInUser, onSuccess }){
     }
   })
 
-  function changeText(e) {
-    setText(e.target.value);
-  }
-
   return (
     <div className='border-b border-silver p-4 space-y-6'>
       <div className='flex space-x-5'>
