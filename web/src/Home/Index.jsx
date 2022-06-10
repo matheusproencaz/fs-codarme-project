@@ -1,6 +1,7 @@
 
 import { HeartIcon } from '@heroicons/react/outline';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const MAX_TWEET_CHAR = 140;
 
@@ -69,17 +70,32 @@ function Tweet({name, username, avatar, children}){
 }
 
 export function Home(){
+  const [data, setData] = useState([]);
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQxZW5xNGIwMDAwMGt1cXJ3YzRtZDczIiwiaWF0IjoxNjU0ODg4MTMzLCJleHAiOjE2NTQ5NzQ1MzN9._E4SJjH6bdSNfhuS9xZzixdnfoEjAtAB-UPKZ0uvBYQ';
+
+  async function getData(){
+    const res = await axios.get('http://localhost:9901/tweets', {
+      headers: {
+        'authorization': `Bearer ${token}`
+      }
+    })
+
+    setData(res.data);
+  }
+
+  useEffect(() => {
+    getData()
+  },[]);
+  
   return(
     <>
       <TweetForm />
       <div>
-        <Tweet name="Elon musk" username="elonmusk" avatar="/src/avatar.png" >
-          Let's make Twitter maximun fun!
+        {data.length && data.map(tweet => (
+          <Tweet name={tweet.user.name} username={tweet.user.username} avatar="/src/avatar.png" key={tweet.id}>
+          {tweet.text}
         </Tweet>
-
-        <Tweet name="Matheus Proença" username="matheusproencaz" avatar="/src/avatar.png" >
-          Robson.
-        </Tweet>
+        ))}
       </div>
     </>
   )
