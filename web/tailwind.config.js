@@ -3,7 +3,8 @@ const brandColors = {
   platinum: '#E7E9EA',
   silver: '#71767B',
   onix: '#333639',
-  richBlack: '#15202B'
+  richBlack: '#15202B',
+  darkBlack: '#1D1F23',
 }
 
 module.exports = {
