@@ -187,6 +187,7 @@ export default function Home({ loggedInUser }){
         'authorization': `Bearer ${loggedInUser.accessToken}`
       }
     })
+    console.log(res);
     setData(res.data);
   }
 
